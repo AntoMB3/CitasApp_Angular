@@ -12,9 +12,11 @@ namespace API.Controllers;
 [Authorize]
 public class UsersController : BaseApiController
 {
+    #region Private vars and constructor
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IPhotoService _photoService;
+
 
     public UsersController(IUserRepository userRepository, IMapper mapper, IPhotoService photoService)
     {
@@ -22,6 +24,7 @@ public class UsersController : BaseApiController
         _mapper = mapper;
         _photoService = photoService;
     }
+    #endregion
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
@@ -72,5 +75,24 @@ public class UsersController : BaseApiController
            _mapper.Map<PhotoDto>(photo));
         }
         return BadRequest("Hubo un problema al subir la foto");
+    }
+
+    [HttpPut("photo/{photoId}")]
+    public async Task<ActionResult> SetMainPhoto(int photoId)
+    {
+        var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+        if(user == null) return NotFound();
+
+        var photo = user.Photos.FirstOrDefault(photo => photo.Id == photoId);
+        if(photo == null) return NotFound("No se encuentra la foto");
+        if (photo.IsMain) return BadRequest("La foto ya es la principal");
+
+        var currentMainPhoto = user.Photos.FirstOrDefault(photo => photo.IsMain);
+        if(currentMainPhoto != null) currentMainPhoto.IsMain = false;
+        photo.IsMain = true;
+
+        if (await _userRepository.SaveAllAsync()) return NoContent();
+
+        return BadRequest("No se pudo establecer la foto como principal");
     }
 }
