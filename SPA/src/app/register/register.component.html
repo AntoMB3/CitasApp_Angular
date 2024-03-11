@@ -2,33 +2,18 @@
 <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="false">
     <h2 class="text-center text-primary">Regístrate</h2>
     <hr>
-    <div class="mb-3">
-        <input type="text"
-            [class.is-invalid]="registerForm.get('username')?.errors && registerForm.get('username')?.touched"
-            class="form-control"
-            placeholder="Nombre de usuario"
-            formControlName="username">
-            <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('required')">
-                Debes ingresar tu nombre de usuario</div>
-    </div>
-    <div class="mb-3">
-        <input type="password"
-            [class.is-invalid]="registerForm.get('password')?.errors && registerForm.get('password')?.touched"
-            class="form-control"
-            placeholder="Contraseña"
-            formControlName="password">
-            <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('minlength') || registerForm.get('password')?.hasError('maxlength')">
-                Debes ingresar una contraseña de al menos 5 caracteres y menos de 15</div>
-    </div>
-    <div class="mb-3">
-        <input type="password"
-        [class.is-invalid]="registerForm.get('confirm_password')?.errors"
-            class="form-control"
-            placeholder="Confringo Password"
-            formControlName="confirm_password">
-            <div class="invalid-feedback" *ngIf="!registerForm.get('password')?.hasError('notmatching')">
-                Las contraseñas deben ser iguales</div>
-    </div>
+    <app-text-input [formControl]="$any(registerForm.controls['username'])"
+    [label]="'Username'">
+</app-text-input>
+    <app-text-input [formControl]="$any(registerForm.controls['password'])"
+    [label]="'Password'"
+    [type]="'password'">
+</app-text-input>
+    <app-text-input [formControl]="$any(registerForm.controls['confirm_password'])"
+    [label]="'Confirm password'"
+    [type]="'password'">
+</app-text-input>
+
     <div class="text-center">
         <button class="btn btn-success me-2" type="submit">Registrarme</button>
         <button class="btn btn-default" type="button" (click)="cancel()">Cancelar</button>
