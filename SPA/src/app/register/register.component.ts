@@ -12,12 +12,14 @@ export class RegisterComponent implements OnInit {
   @Output() cancelRegister = new EventEmitter();
   model: any = {};
   registerForm: FormGroup = new FormGroup({});
+  maxDate: Date = new Date();
   
   constructor(private accountService: AccountService,
     private toastr: ToastrService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.initializeForm();
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 
   initializeForm() {
@@ -25,7 +27,7 @@ export class RegisterComponent implements OnInit {
       gender:           ["female"],
       username:         ["", Validators.required],
       knownAs:          ["", Validators.required],
-      dateOfbirth:      ["", Validators.required],
+      dateOfBirth:      ["", Validators.required],
       city:             ["", Validators.required],
       country:          ["", Validators.required],
       password:         ["", [Validators.required, Validators.minLength(5), Validators.maxLength(15)]],
