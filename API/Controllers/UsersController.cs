@@ -2,6 +2,7 @@ using System.Security.Claims;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -27,10 +28,22 @@ public class UsersController : BaseApiController
     #endregion
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers()
+    public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
     {
-        var users = await _userRepository.GetMembersAsync();
-        
+        var currentUser = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+        userParams.CurrentUsername = currentUser.UserName;
+        userParams.MaxAge = 60;
+        userParams.MinAge = 18;
+
+        if(string.IsNullOrEmpty(userParams.Gender))
+        {
+            userParams.Gender = currentUser.Gender == "female" ? "male" : "female";
+        }
+        var users = await _userRepository.GetMembersAsync(userParams);
+
+        Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PagesSize,
+            users.TotalCount, users.TotalPages));
+
         return Ok(users);
     }
     
@@ -111,7 +124,7 @@ public class UsersController : BaseApiController
             if(result.Error != null) return BadRequest(result.Error.Message);
         }
         user.Photos.Remove(photo);
-        if(await _userRepository.SaveAllAsync()) return Ok();
+        if (await _userRepository.SaveAllAsync()) return Ok();
         return BadRequest("No ha sido posible borrar la foto");
     }
 }
