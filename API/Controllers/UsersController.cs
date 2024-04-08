@@ -30,10 +30,11 @@ public class UsersController : BaseApiController
     [HttpGet]
     public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery] UserParams userParams)
     {
-        var currentUser = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
-        userParams.CurrentUsername = currentUser.UserName;
-        userParams.MaxAge = 60;
-        userParams.MinAge = 18;
+        var currentUser = await _userRepository
+            .GetUserByUsernameAsync(User.GetUsername());
+
+        //userParams.CurrentUsername = currentUser.UserName;
+        userParams.CurrentUsername = "Anttho";
 
         if(string.IsNullOrEmpty(userParams.Gender))
         {
