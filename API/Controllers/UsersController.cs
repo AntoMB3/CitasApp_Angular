@@ -33,8 +33,8 @@ public class UsersController : BaseApiController
         var currentUser = await _userRepository
             .GetUserByUsernameAsync(User.GetUsername());
 
-        //userParams.CurrentUsername = currentUser.UserName;
-        userParams.CurrentUsername = "Anttho";
+        userParams.CurrentUsername = currentUser.UserName;
+        //userParams.CurrentUsername = "Anttho";
 
         if(string.IsNullOrEmpty(userParams.Gender))
         {
