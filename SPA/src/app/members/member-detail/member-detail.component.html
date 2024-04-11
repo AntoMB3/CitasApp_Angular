@@ -14,11 +14,11 @@
                 </div>
                 <div>
                     <strong>Última conexión:</strong>
-                    <p>{{member.lastActive | timeago}}</p>
+                    <p>{{member.lastActive + "Z" | timeago}}</p>
                 </div>
                 <div>
                     <strong>Usuario desde:</strong>
-                    <p>{{member.created | timeago}}</p>
+                    <p>{{member.lastActive + "Z" | timeago}}</p>
                 </div>
             </div>
             <div class="card-footer">
