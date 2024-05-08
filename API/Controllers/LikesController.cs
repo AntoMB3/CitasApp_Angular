@@ -47,7 +47,7 @@ public class LikesController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<LikeDto>>> GetUserLikes(LikesParams lp)
+    public async Task<ActionResult<PagedList<LikeDto>>> GetUserLikes([FromQuery]LikesParams lp)
     {
         lp.UserId = User.GetUserId();
         var users = await _likesRepository.GetUserLikesAsync(lp);
