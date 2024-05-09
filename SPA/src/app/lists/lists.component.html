@@ -1,5 +1,4 @@
 <div class="text-center mt-3">
-    <h2>{{predicate === "liked" ? "Quiénes me gustan" : "A quién le gusto"</h2>
 </div>
 
 <div class="container mt-3">
@@ -12,7 +11,7 @@
                     Quienes me gustan
             </button>
             <button class="btn btn-primary"
-                    btnRadio="likedBt"
+                    btnRadio="likedBy"
                     [(ngModel)]="predicate"
                     (click)="loadLikes()">
                     A quienes les gusto
@@ -25,4 +24,20 @@
             <app-member-card [member]="member"></app-member-card>
         </div>
     </div>
+
+    <div class="d-flex justify-content-center" *ngIf="pagination">
+        <pagination
+            [boundaryLinks]="true"
+            [totalItems]="pagination.totalItems"
+            [itemsPerPage]="pagination.itemsPerPage"
+            [maxSize]="10"
+            [(ngModel)]="pagination.currentPage"
+            (pageChanged)="pageChanged($event)"
+            previousText="&lsaquo;"
+            nextText="&rsaquo;"
+            firstText="&laquo;"
+            lastText="&raquo;">
+        </pagination>
+    </div>  
+    
 </div>
