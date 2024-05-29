@@ -24,12 +24,12 @@
     </div>
 </div>
 
-<div class="row" *ngIf="!messages || messages.length === 0">
+<div class="row" [hidden]="loading" *ngIf="!messages || messages.length === 0">
     <h1>No hay mensajes</h1>
 </div>
 
 <div class="row" *ngIf="messages && messages.length > 0">
-    <table class="table table-hover" style="cursor: pointer;">
+    <table [hidden]="loading" class="table table-hover" style="cursor: pointer;">
         <thead>
             <tr>
                 <th stryle="width: 40%">Message</th>
@@ -69,7 +69,7 @@
     </table>
 </div>
 
-<div class="d-flex justify-content-center" *ngIf="pagination && messages && messages.length > 0">
+<div class="d-flex justify-content-center" *ngIf="!loading && pagination && messages && messages.length > 0">
     <pagination
         [boundaryLinks]="true"
         [totalItems]="pagination.totalItems"
