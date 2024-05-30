@@ -24,4 +24,8 @@ export class MessageService {
   getMessageThread(username: string): Observable<Message[]> {
     return this.http.get<Message[]>(this.baseUrl + "messages/thread/" + username);
   }
+
+  deleteMessage(id: number){
+    return this.http.delete(this.baseUrl + "message/" + id)
+  }
 }
